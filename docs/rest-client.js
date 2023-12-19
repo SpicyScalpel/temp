@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <div id="app">
+        <table id="theatersTable" class="table table-striped table-bordered">
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Rating</th>
+            </tr>
+            <tr v-for="theater in theaters">
+                <td @click="getTheater(theater.id)">{{theater.name}}</td>
+                <td>{{theater.price}}</td>
+                <td>{{theater.rating}}</td>
+            </tr>
+        </table>
+        <div id="theaterInfoModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr><th>ID</th><td>{{theaterInModal.id}}</td></tr>
+                        <tr><th>Name</th><td>{{theaterInModal.name}}</td></tr>
+                        <tr><th>Price</th><td>{{theaterInModal.price}}</td></tr>
+                        <tr><th>Rating</th><td>{{theaterInModal.rating}}</td></tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  
+                </div>
+              </div>
+            </div>
+          </div>          
+    </div>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+ 
+    <script src="https://unpkg.com/vue@3.3.11/dist/vue.global.js"></script>
+ 
+    <script>
+        const vue = Vue.createApp({
+            data() {
+                return { 
+                    theaterInModal : {name: null},
+                    theaters:  []
+                    
+            }
+        },
+        async created() {
+            this.theaters = await (await fetch('http://localhost:8080/theaters')).json();
+        },
+        methods: {
+            getTheater : async function(id){
+                this.theaterInModal = await (await fetch(`http//localhost:8080/theaters/${id}`)).json();
+                let theaterInfoModal = new bootstrap.Modal(document.getElementById('theaterInfoModal'), {})
+                theaterInfoModal.show();
+            }
+        }
+    }).mount('#app')

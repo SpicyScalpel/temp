@@ -1,0 +1,282 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "TARGV22-KINOAPI",
+        "version": "1.0.0",
+        "description": "KINO RUUMID TELLIMINE"
+    },
+    "paths": {
+        "/theaters": {
+            "get": {
+                "tags": [
+                    "details"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "list of theatres": {
+                                        "value": [
+                                            "The poidgeon",
+                                            "Kunda Kino",
+                                            "Paladins:Champions of the Realm ",
+                                            "Super Mario Bros. Wonder"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Return all theatres in array"
+                    }
+                },
+                "summary": "Get full details of theaters",
+                "description": "RETURNS A LIST OF THE  theaters IN API"
+            },
+            "post": {
+                "requestBody": {
+                    "description": "a new  ytheatre to be created",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/error"
+                            },
+                            "examples": {
+                                "parameters missing": {
+                                    "value": {
+                                        "error": "one  or all parameters missing"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "new-theatre"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/new-theatre"
+                                },
+                                "examples": {
+                                    "theatre that is added": {
+                                        "value": "{\n    \n    \"id\":\"new theatre\",\n        \"name\":\"theatre\",\n        \"price\":0,24,\n        \"rating\": 5\n    }\n    \n    \n}"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "new theatre has been created."
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        },
+                        "description": "one or all parameters are missing"
+                    }
+                },
+                "summary": "Create a theatre into the API (either db or array)",
+                "description": "Creates a new theatre"
+            }
+        },
+        "/theaters/{id}": {
+            "get": {
+                "tags": [
+                    "details"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Full  details of Theatre": {
+                                        "value": "[\n       'id':1,\n      'name':\"The poidgeon\",\n      'price':290,\n      'rating': 3\n          \n      \n    \n]"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Return full description of a given id theatre"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "examples": {
+                                    "error": {
+                                        "value": {
+                                            "error": "Theatre \\w+ was not found in game array."
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Theatre was not found\n\n"
+                    }
+                },
+                "operationId": "id",
+                "summary": "get full details of a theatre",
+                "description": "returns  full  details of a given  theatre, based on user input id by user\n\n"
+            },
+            "delete": {
+                "tags": [
+                    "delete"
+                ],
+                "parameters": [
+                    {
+                        "examples": {
+                            "Interger": {
+                                "value": "55"
+                            }
+                        },
+                        "name": "id",
+                        "description": "Id for Theatre in array",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "headers": {
+                            "No http headers have been defined": {}
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "examples": {
+                                    "204 response": {
+                                        "value": {
+                                            "error": "No Content"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "headers": {
+                            "No http headers have been defined": {}
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "examples": {
+                                    "Theatre /w+ was not found": {
+                                        "value": "{\n    \"error: \"Theatre \\\\w+ was not found\"\n}"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "theater was not found"
+                    }
+                },
+                "operationId": "Id",
+                "summary": "Delete a theatre by id",
+                "description": "Delete a theater of the given id\n"
+            },
+            "parameters": [
+                {
+                    "examples": {
+                        "Interger": {
+                            "value": "55"
+                        }
+                    },
+                    "name": "id",
+                    "description": "Id for Theatre in array",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        }
+    },
+    "components": {
+        "schemas": {
+            "error": {
+                "title": "Root Type for error",
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "error": "Error message"
+                }
+            },
+            "new-theatre": {
+                "description": "  new Theatre ",
+                "required": [
+                    "name",
+                    "rating",
+                    "price"
+                ],
+                "type": "object",
+                "properties": {
+                    "rating": {
+                        "format": "int32",
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "price": {
+                        "format": "int32",
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    }
+                }
+            },
+            "delete-theater": {
+                "title": "Root Type for delete-theater",
+                "description": "",
+                "required": [
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "format": "int32",
+                        "type": "integer"
+                    }
+                },
+                "example": {
+                    "id": 1
+                }
+            }
+        }
+    }
+}
